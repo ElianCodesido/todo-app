@@ -1,0 +1,28 @@
+
+
+.toggleHeader{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+   background-color: rgb(82, 69, 95);
+   border-color: rgb(197, 194, 194);
+   border-width: 1px;
+   border-style: solid;
+}
+.toggleHeader:hover{
+    opacity: 0.8;
+}
+.header-text {
+    font-weight: 300;
+    font-size: 20px;
+    margin: 0;
+    padding: 5px 5px ;
+    user-select: none;
+}
+
+.list {
+  max-height: 200px;
+  overflow-y: auto;
+
+}

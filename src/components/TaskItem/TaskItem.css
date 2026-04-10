@@ -1,0 +1,42 @@
+
+.diver {
+  display: flex;
+  align-items: center;   /* alinea verticalmente */
+  justify-content: center;
+  gap: 10px;
+  width: 100%; 
+  
+}
+.diver div {
+  display: flex;
+  align-items: center;
+}
+.marked {
+  text-decoration: line-through;
+}
+.date {
+  white-space: nowrap; /* evita que se parta en varias líneas */
+  font-size: small;
+  color: grey;
+}
+.diver button {
+  height: 32px;
+  border-style: solid;
+  border-radius: 7px;
+  border-width: 1px;
+}
+.text {
+  font-size: large;
+}
+.delete{
+  border-color: red;
+}
+.edit {
+  display: flex;
+  gap: 5px;
+  margin-top: 18px;
+  margin-bottom: 18px;
+}
+.editTextArea {
+  width: 160px;
+}
