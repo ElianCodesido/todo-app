@@ -32,7 +32,12 @@ npm run build
 
 ## Demo
 
-https://tu-app.vercel.app
+https://todo-app-elian.vercel.app
+
+## Future improvements:
+- Mobile drag support (touch events)
+- Refactor draggable logic into reusable hook
+- Improve window layering (z-index management)
 
 ## Author
 
