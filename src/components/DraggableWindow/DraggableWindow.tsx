@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect, type ReactNode} from "react";
-import "./DraggableWindow.css"
+import { useState, useRef, useEffect, type ReactNode } from "react";
+import "./DraggableWindow.css";
 type Props = {
   headerTitle: string;
   children: ReactNode;
@@ -9,9 +9,14 @@ type Props = {
 type Position = {
   x: number;
   y: number;
-}
+};
 
-export function DraggableWindow({headerTitle,children,idList,handleClose}: Props) {
+export function DraggableWindow({
+  headerTitle,
+  children,
+  idList,
+  handleClose,
+}: Props) {
   const [position, setPosition] = useState<Position>(() => {
     try {
       const saved = localStorage.getItem("position-" + idList);
@@ -23,15 +28,14 @@ export function DraggableWindow({headerTitle,children,idList,handleClose}: Props
   useEffect(() => {
     localStorage.setItem("position-" + idList, JSON.stringify(position));
   }, [position]);
-  
+
   const dragging = useRef(false);
   const offset = useRef({ x: 0, y: 0 });
+  const windowRef = useRef<HTMLDivElement>(null);
 
   const handleMouseDown = (e: React.MouseEvent) => {
     e.preventDefault();
     dragging.current = true;
-
-  
 
     offset.current = {
       x: e.clientX - position.x,
@@ -40,21 +44,28 @@ export function DraggableWindow({headerTitle,children,idList,handleClose}: Props
   };
 
   useEffect(() => {
-    
     const handleMouseMove = (e: MouseEvent) => {
       if (!dragging.current) return;
       const newX = e.clientX - offset.current.x;
       const newY = e.clientY - offset.current.y;
 
-    setPosition({
-      x: newX,
-      y: Math.max(0, newY), 
-    });
+      const width = windowRef.current?.offsetWidth || 0;
+      const height = windowRef.current?.offsetHeight || 0;
+
+      const maxX = window.innerWidth - width;
+      const maxY = window.innerHeight - height + 100;
+
+      const clampedX = Math.max(0, Math.min(newX, maxX));
+      const clampedY = Math.max(0, Math.min(newY, maxY));
+
+      setPosition({
+        x: clampedX,
+        y: clampedY,
+      });
     };
 
     const handleMouseUp = () => {
       dragging.current = false;
-
     };
 
     window.addEventListener("mousemove", handleMouseMove);
@@ -69,22 +80,29 @@ export function DraggableWindow({headerTitle,children,idList,handleClose}: Props
   return (
     <>
       <div
+        ref={windowRef}
         style={{
           position: "absolute",
           left: position.x,
           top: position.y,
-        }}>
-          <div className='window'>
-            <div className="window-header" onMouseDown={(e) => handleMouseDown(e)}>
-              <div><p className="window-title">{headerTitle}</p></div>
-                <div className="window-actions">
-                  <button className="btn close" onClick={handleClose}>×</button>
-                </div>
+        }}
+      >
+        <div className="window">
+          <div
+            className="window-header"
+            onMouseDown={(e) => handleMouseDown(e)}
+          >
+            <div>
+              <p className="window-title">{headerTitle}</p>
             </div>
-            <div className='window-content'>
-              {children}
+            <div className="window-actions">
+              <button className="btn close" onClick={handleClose}>
+                ×
+              </button>
             </div>
           </div>
+          <div className="window-content">{children}</div>
+        </div>
       </div>
     </>
   );

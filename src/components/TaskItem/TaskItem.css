@@ -1,11 +1,9 @@
-
 .diver {
   display: flex;
-  align-items: center;   /* alinea verticalmente */
-  justify-content: center;
+  align-items: center;
+  justify-content: left;
   gap: 10px;
-  width: 100%; 
-  
+  width: 100%;
 }
 .diver div {
   display: flex;
@@ -15,7 +13,7 @@
   text-decoration: line-through;
 }
 .date {
-  white-space: nowrap; /* evita que se parta en varias líneas */
+  white-space: nowrap;
   font-size: small;
   color: grey;
 }
@@ -28,7 +26,7 @@
 .text {
   font-size: large;
 }
-.delete{
+.delete {
   border-color: red;
 }
 .edit {
