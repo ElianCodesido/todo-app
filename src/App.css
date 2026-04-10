@@ -6,19 +6,17 @@
 .tasklists-container {
   display: flex;
   gap: 20px;
-  flex-wrap: wrap; 
+  flex-wrap: wrap;
   padding: 20px;
   align-items: center;
-  justify-content: center; 
+  justify-content: center;
   flex: 1;
-  position: relative; 
-  overflow: hidden;  
+  position: relative;
 }
-.taskAdder{
-    display: flex;
-    width: 100%;
-    gap: 10px;
-    justify-content: center;
-    align-items: center;
-    margin: 3px;
+.taskAdder {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  margin: 3px;
 }
