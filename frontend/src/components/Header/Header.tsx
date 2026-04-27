@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./Header.css";
-import { Modal } from "../../components";
+import { Modal } from "..";
 export const Header = () => {
   const [showContact, setShowContact] = useState(false);
   return (

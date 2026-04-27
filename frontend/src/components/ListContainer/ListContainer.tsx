@@ -1,5 +1,5 @@
 import { useTodo } from "../../hooks";
-import { TaskList, DraggableWindow, Toast } from "../../components";
+import { TaskList, DraggableWindow, Toast } from "..";
 interface Props {
   id: number;
   title: string;
