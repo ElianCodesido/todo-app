@@ -12,45 +12,61 @@ const throwError = async (res: Response) => {
 };
 
 export const getTodos = async () => {
-  const res = await fetch(API_URL);
-  if (!res.ok) {
-    await throwError(res);
+  try {
+    const res = await fetch(API_URL);
+    if (!res.ok) {
+      await throwError(res);
+    }
+    return res.json();
+  } catch {
+    throw new Error("Cannot connect to server");
   }
-  return res.json();
 };
 
 export const createTodo = async (todo: Omit<Task, "id">) => {
-  const res = await fetch(API_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(todo),
-  });
+  try {
+    const res = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(todo),
+    });
 
-  if (!res.ok) {
-    await throwError(res);
+    if (!res.ok) {
+      await throwError(res);
+    }
+    return res.json();
+  } catch {
+    throw new Error("Cannot connect to server");
   }
-  return res.json();
 };
 
 export const updateTodo = async (id: number, todo: Omit<Task, "id">) => {
-  const res = await fetch(`${API_URL}/${id}`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(todo),
-  });
+  try {
+    const res = await fetch(`${API_URL}/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(todo),
+    });
 
-  if (!res.ok) {
-    await throwError(res);
+    if (!res.ok) {
+      await throwError(res);
+    }
+    return res.json();
+  } catch {
+    throw new Error("Cannot connect to server");
   }
-  return res.json();
 };
 
 export const removeTodo = async (id: number) => {
-  const res = await fetch(`${API_URL}/${id}`, {
-    method: "DELETE",
-  });
+  try {
+    const res = await fetch(`${API_URL}/${id}`, {
+      method: "DELETE",
+    });
 
-  if (!res.ok) {
-    await throwError(res);
+    if (!res.ok) {
+      await throwError(res);
+    }
+  } catch {
+    throw new Error("Cannot connect to server");
   }
 };
