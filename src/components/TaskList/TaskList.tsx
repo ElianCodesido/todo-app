@@ -1,71 +1,32 @@
-import { useEffect, useState } from "react";
 import { TaskItem } from "../TaskItem/TaskItem";
 import { TaskForm } from "../TaskForm/TaskForm";
 import { ToggleShow } from "../ToggleShow/ToggleShow";
-
-interface Props {
-  idList: number;
-}
-
-type Task = {
-  id: number;
-  text: string;
-  completed: boolean;
-};
-
-export const TaskList = ({ idList }: Props) => {
-  const [tasks, setTasks] = useState<Task[]>(() => {
-    const saved = localStorage.getItem("tasks-" + idList);
-    return saved ? (JSON.parse(saved) as Task[]) : [];
-  });
-
-  useEffect(() => {
-    localStorage.setItem("tasks-" + idList, JSON.stringify(tasks));
-  }, [tasks]);
-
-  const createTask = (text: string) => {
-    setTasks((prev) => [
-      ...prev,
-      {
-        id: Date.now(),
-        text,
-        completed: false,
-      },
-    ]);
-  };
-
-  const editeTask = (id: number, newText: string) => {
-    setTasks((prev) =>
-      prev.map((t) => (t.id === id ? { ...t, text: newText } : t)),
-    );
-  };
-
-  const deleteTask = (id: number) => {
-    setTasks((prev) => prev.filter((t) => t.id !== id));
-  };
-
-  const toggleCompleted = (id: number) => {
-    setTasks((prev) =>
-      prev.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t)),
-    );
-  };
-
+import type { UseTodoReturn } from "../../hooks/useTodo";
+export const TaskList = ({
+  tasks,
+  loading,
+  addTodo,
+  editTodo,
+  deleteTodo,
+  toggleTodo,
+}: Omit<UseTodoReturn, "error">) => {
   return (
     <>
       <div>
-        <TaskForm onAdd={createTask} />
+        <TaskForm onAdd={addTodo} loading={loading.add} />
         <ToggleShow header="Active">
           {tasks
             .filter((t) => !t.completed)
-            .map((tarea) => (
+            .map((todo) => (
               <TaskItem
-                key={tarea.id}
-                text={tarea.text}
-                id={tarea.id}
-                completed={tarea.completed}
-                onEdit={(newText) => editeTask(tarea.id, newText)}
-                onDelete={() => deleteTask(tarea.id)}
-                onToggle={() => toggleCompleted(tarea.id)}
+                key={todo.id}
+                text={todo.title}
+                id={todo.id}
+                completed={todo.completed}
+                loading={loading}
+                onEdit={(newtitle) => editTodo(todo.id, newtitle)}
+                onDelete={() => deleteTodo(todo.id)}
+                onToggle={() => toggleTodo(todo.id)}
               />
             ))}
         </ToggleShow>
@@ -73,15 +34,16 @@ export const TaskList = ({ idList }: Props) => {
         <ToggleShow header="Completed">
           {tasks
             .filter((t) => t.completed)
-            .map((tarea) => (
+            .map((todo) => (
               <TaskItem
-                key={tarea.id}
-                text={tarea.text}
-                id={tarea.id}
-                completed={tarea.completed}
-                onEdit={(newText) => editeTask(tarea.id, newText)}
-                onDelete={() => deleteTask(tarea.id)}
-                onToggle={() => toggleCompleted(tarea.id)}
+                key={todo.id}
+                text={todo.title}
+                id={todo.id}
+                completed={todo.completed}
+                loading={loading}
+                onEdit={(newtitle) => editTodo(todo.id, newtitle)}
+                onDelete={() => deleteTodo(todo.id)}
+                onToggle={() => toggleTodo(todo.id)}
               />
             ))}
         </ToggleShow>

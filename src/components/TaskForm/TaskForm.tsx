@@ -1,10 +1,11 @@
 import { useState } from "react";
-import "./TaskForm.css"
+import "./TaskForm.css";
 interface Props {
   onAdd: (text: string) => void;
+  loading: boolean;
 }
 
-export const TaskForm = ({ onAdd }: Props) => {
+export const TaskForm = ({ onAdd, loading }: Props) => {
   const [text, setText] = useState("");
 
   const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
@@ -16,10 +17,9 @@ export const TaskForm = ({ onAdd }: Props) => {
     setText(""); // limpia input
   };
 
-
   return (
     <>
-    <div className="input">
+      <div className="input">
         <form className="form" onSubmit={handleSubmit}>
           <input
             type="text"
@@ -27,10 +27,12 @@ export const TaskForm = ({ onAdd }: Props) => {
             value={text}
             onChange={(e) => setText(e.target.value)}
             autoFocus
-            />
-          <button className='button' type="submit">Add</button>
+          />
+          <button disabled={loading} className="button" type="submit">
+            Add
+          </button>
         </form>
-    </div>
+      </div>
     </>
   );
 };
