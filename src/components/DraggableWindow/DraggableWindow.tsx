@@ -26,6 +26,7 @@ export function DraggableWindow({headerTitle,children,idList,handleClose}: Props
   
   const dragging = useRef(false);
   const offset = useRef({ x: 0, y: 0 });
+  const windowRef = useRef<HTMLDivElement>(null);
 
   const handleMouseDown = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -46,10 +47,19 @@ export function DraggableWindow({headerTitle,children,idList,handleClose}: Props
       const newX = e.clientX - offset.current.x;
       const newY = e.clientY - offset.current.y;
 
-    setPosition({
-      x: newX,
-      y: Math.max(0, newY), 
-    });
+      const width = windowRef.current?.offsetWidth || 0;
+      const height = windowRef.current?.offsetHeight || 0;
+
+      const maxX = window.innerWidth - width;
+      const maxY = window.innerHeight - height + 100;
+
+      const clampedX = Math.max(0, Math.min(newX, maxX));
+      const clampedY = Math.max(0, Math.min(newY, maxY));
+
+      setPosition({
+        x: clampedX,
+        y: clampedY,
+      });
     };
 
     const handleMouseUp = () => {
