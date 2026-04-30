@@ -1,6 +1,6 @@
 # Task Manager App
 
-A task management application built with React and TypeScript.
+A task management application built with React, TypeScript and Node.js.
 
 ## Features
 
@@ -8,12 +8,13 @@ A task management application built with React and TypeScript.
 - Add, edit, and delete tasks
 - Mark tasks as completed
 - Draggable windows
-- Local storage persistence
+- Backend API persistence (in-memory)
 
 ## Tech Stack
 
 - React
 - TypeScript
+- Node.js
 - Vite
 - CSS
 
@@ -36,7 +37,6 @@ https://todo-app-elian.vercel.app
 
 ## Future improvements:
 - Mobile drag support (touch events)
-- Refactor draggable logic into reusable hook
 - Improve window layering (z-index management)
 
 ## Author
