@@ -16,7 +16,7 @@ export const ToggleShow = ({header,children}: Props) => {
             onClick={() => setOpen(!open)}
         >
                 <p className='header-text'>{header}</p>
-                <p className='header-text'>{open ? "𐔝" : "ᐸ"}</p>
+                <p className="header-text">{open ? "←" : "→"}</p>
         </div>
     
         {open && (
