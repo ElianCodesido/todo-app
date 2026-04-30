@@ -1,6 +1,6 @@
-import type { Task } from "../types/Task";
+import type { List } from "../types/List";
 
-const API_URL = import.meta.env.VITE_API_URL + "/todos";
+const API_URL = import.meta.env.VITE_API_URL + "/lists";
 
 const throwError = async (res: Response) => {
   try {
@@ -11,55 +11,37 @@ const throwError = async (res: Response) => {
   }
 };
 
-export const getTodos = async () => {
+export const getLists = async (): Promise<List[]> => {
   try {
     const res = await fetch(API_URL);
-    if (!res.ok) {
-      await throwError(res);
-    }
+    if (!res.ok) await throwError(res);
     return res.json();
   } catch {
     throw new Error("Cannot connect to server");
   }
 };
 
-export const getTodosByList = async (listId: number): Promise<Task[]> => {
-  try {
-    const res = await fetch(`${API_URL}?listId=${listId}`);
-
-    if (!res.ok) {
-      await throwError(res);
-    }
-
-    return await res.json();
-  } catch (error) {
-    throw new Error("Error fetching todos for this list");
-  }
-};
-
-export const createTodo = async (todo: Omit<Task, "id">) => {
+export const createList = async (title: string): Promise<List> => {
   try {
     const res = await fetch(API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(todo),
+      body: JSON.stringify({ title }),
     });
 
-    if (!res.ok) {
-      await throwError(res);
-    }
+    if (!res.ok) await throwError(res);
     return res.json();
   } catch {
     throw new Error("Cannot connect to server");
   }
 };
 
-export const updateTodo = async (id: number, todo: Omit<Task, "id">) => {
+export const updateList = async (id: number, list: Omit<List, "id">) => {
   try {
     const res = await fetch(`${API_URL}/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(todo),
+      body: JSON.stringify(list),
     });
 
     if (!res.ok) {
@@ -71,15 +53,13 @@ export const updateTodo = async (id: number, todo: Omit<Task, "id">) => {
   }
 };
 
-export const removeTodo = async (id: number) => {
+export const removeList = async (id: number) => {
   try {
     const res = await fetch(`${API_URL}/${id}`, {
       method: "DELETE",
     });
 
-    if (!res.ok) {
-      await throwError(res);
-    }
+    if (!res.ok) await throwError(res);
   } catch {
     throw new Error("Cannot connect to server");
   }

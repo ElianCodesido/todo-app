@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import {
-  getTodos,
+  getTodosByList,
   createTodo,
   updateTodo,
   removeTodo,
@@ -24,7 +24,7 @@ export interface UseTodoReturn {
   toggleTodo: (id: number) => Promise<void>;
 }
 
-export const useTodo = (): UseTodoReturn => {
+export const useTodo = (listId: number): UseTodoReturn => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState<LoadingState>({
@@ -37,7 +37,7 @@ export const useTodo = (): UseTodoReturn => {
   useEffect(() => {
     const fetchTodos = async () => {
       try {
-        const data = await getTodos();
+        const data = await getTodosByList(listId);
         setTasks(data);
       } catch (err) {
         if (err instanceof Error) {
@@ -56,6 +56,7 @@ export const useTodo = (): UseTodoReturn => {
       id: tempId,
       title,
       completed: false,
+      listId,
     };
 
     // optimistic UI
@@ -63,10 +64,7 @@ export const useTodo = (): UseTodoReturn => {
 
     try {
       setLoading((prev) => ({ ...prev, add: true }));
-      const data = await createTodo({
-        title,
-        completed: false,
-      });
+      const data = await createTodo(newTask);
 
       // replace temp id with real id
       setTasks((prev) =>
@@ -104,6 +102,7 @@ export const useTodo = (): UseTodoReturn => {
       await updateTodo(id, {
         title: updatedTask.title,
         completed: updatedTask.completed,
+        listId,
       });
     } catch (err) {
       if (err instanceof Error) {
@@ -150,6 +149,7 @@ export const useTodo = (): UseTodoReturn => {
       await updateTodo(id, {
         title: updatedTask.title,
         completed: updatedTask.completed,
+        listId,
       });
     } catch (err) {
       setTasks((prev) => prev.map((t) => (t.id === id ? task : t)));

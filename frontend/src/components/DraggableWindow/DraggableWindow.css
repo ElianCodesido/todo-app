@@ -62,3 +62,23 @@
   color: white;
   border-radius: 8px;
 }
+.edit {
+  display: flex;
+  gap: 5px;
+  margin: 0;
+}
+.editTextArea {
+  width: 160px;
+}
+.edit-btn {
+  width: 20px;
+  height: 20px;
+  background-image: url("../../assets/edit-icon.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  filter: invert(1);
+}

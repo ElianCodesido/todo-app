@@ -1,34 +1,17 @@
 import "./App.css";
-import { Header, ListContainer } from "./components";
-import { useEffect, useState } from "react";
-
+import { Header, ListContainer, Toast } from "./components";
+import { useState } from "react";
+import { useList } from "./hooks/useList";
 function App() {
-  type ListItem = {
-    id: number;
-    text: string;
-  };
   //states
-  const [lists, setLists] = useState<ListItem[]>(() => {
-    const saved = localStorage.getItem("taskLists");
-    return saved ? (JSON.parse(saved) as ListItem[]) : [];
-  });
   const [text, setText] = useState("");
   //handlers
-  const handleAdd = () => {
-    if (!text.trim()) return;
-    setLists((prev) => [...prev, { text, id: Date.now() }]);
-    setText("");
-  };
-  const handleDelete = (id: number) => {
-    setLists((prev) => prev.filter((l) => l.id !== id));
-  };
-  useEffect(() => {
-    localStorage.setItem("taskLists", JSON.stringify(lists));
-  }, [lists]);
+  const { lists, error, loading, addList, editList, deleteList } = useList();
 
   return (
     <>
       <div className="app">
+        {error && <Toast message="Todo List Error" />}
         <Header />
         <div className="taskAdder">
           <input
@@ -38,10 +21,12 @@ function App() {
               e.target.value.length <= 25 ? setText(e.target.value) : null;
             }}
             onKeyDown={(e) => {
-              if (e.key === "Enter") handleAdd();
+              if (e.key === "Enter") addList(text);
             }}
           />
-          <button onClick={handleAdd}>Add Task List</button>
+          <button disabled={loading.add} onClick={() => addList(text)}>
+            Add Task List
+          </button>
         </div>
 
         <div className="tasklists-container">
@@ -49,8 +34,10 @@ function App() {
             <ListContainer
               key={list.id}
               id={list.id}
-              title={list.text}
-              onDelete={() => handleDelete(list.id)}
+              title={list.title}
+              listId={list.id}
+              onEdit={(newText) => editList(list.id, newText)}
+              onDelete={() => deleteList(list.id)}
             />
           ))}
         </div>

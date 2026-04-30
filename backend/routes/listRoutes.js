@@ -1,18 +1,18 @@
 import express from "express";
 import {
-  getTodos,
-  getTodoById,
-  createTodo,
-  updateTodo,
-  deleteTodo,
+  getlists,
+  getListById,
+  createList,
+  updateList,
+  deleteList,
 } from "../controllers/listController.js";
 
 const router = express.Router();
 
-router.get("/", getTodos);
-router.get("/:id", getTodoById);
-router.post("/", createTodo);
-router.put("/:id", updateTodo);
-router.delete("/:id", deleteTodo);
+router.get("/", getlists);
+router.get("/:id", getListById);
+router.post("/", createList);
+router.put("/:id", updateList);
+router.delete("/:id", deleteList);
 
 export default router;

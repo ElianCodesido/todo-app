@@ -1,6 +1,14 @@
-let todos = [];
+import { setTodos, todos } from "../data/store.js";
 
 export const getTodos = (req, res) => {
+  const listIdStr = req.query.listId;
+
+  if (listIdStr) {
+    const listId = Number(listIdStr);
+    const filtered = todos.filter((t) => t.listId === listId);
+    return res.json(filtered);
+  }
+
   res.json(todos);
 };
 
@@ -16,7 +24,7 @@ export const getTodoById = (req, res) => {
 };
 
 export const createTodo = (req, res) => {
-  const { title, completed } = req.body;
+  const { title, completed, listId } = req.body;
 
   if (!title || title.trim() === "") {
     return res.status(400).json({ error: "Title is required" });
@@ -26,9 +34,10 @@ export const createTodo = (req, res) => {
     id: Date.now(),
     title,
     completed: completed ?? false,
+    listId,
   };
 
-  todos.push(newTodo);
+  setTodos([...todos, newTodo]);
 
   res.status(201).json(newTodo);
 };
@@ -48,7 +57,7 @@ export const updateTodo = (req, res) => {
 
   const updated = { ...existing, ...body };
 
-  todos = todos.map((t) => (t.id === id ? updated : t));
+  setTodos(todos.map((t) => (t.id === id ? updated : t)));
 
   res.json(updated);
 };
@@ -62,7 +71,7 @@ export const deleteTodo = (req, res) => {
     return res.status(404).json({ error: "Not found" });
   }
 
-  todos = todos.filter((t) => t.id !== id);
+  setTodos(todos.filter((t) => t.id !== id));
 
   res.status(204).send();
 };

@@ -1,68 +1,67 @@
-let lists = [];
+import { lists, setLists, deleteTodosInList } from "../data/store.js";
 
-export const getTodos = (req, res) => {
+export const getlists = (req, res) => {
   res.json(lists);
 };
 
-export const getTodoById = (req, res) => {
+export const getListById = (req, res) => {
   const id = Number(req.params.id);
-  const todo = lists.find((t) => t.id === id);
+  const list = lists.find((l) => l.id === id);
 
-  if (!todo) {
+  if (!list) {
     return res.status(404).json({ error: "Not found" });
   }
 
-  res.json(todo);
+  res.json(list);
 };
 
-export const createTodo = (req, res) => {
-  const { text } = req.body;
-
-  if (!text || text.trim() === "") {
-    return res.status(400).json({ error: "text is required" });
+export const createList = (req, res) => {
+  const { title } = req.body;
+  if (!title || title.trim() === "") {
+    return res.status(400).json({ error: "title is required" });
   }
 
   const newList = {
     id: Date.now(),
-    text,
+    title,
   };
 
-  lists.push(newList);
+  setLists([...lists, newList]);
 
   res.status(201).json(newList);
 };
 
-export const updateTodo = (req, res) => {
+export const updateList = (req, res) => {
   const id = Number(req.params.id);
   const body = req.body;
 
-  const existing = lists.find((t) => t.id === id);
+  const existing = lists.find((l) => l.id === id);
   if (!existing) {
     return res.status(404).json({ error: "Not found" });
   }
 
-  if (!body.text || body.text.trim() === "") {
-    return res.status(400).json({ error: "text is required" });
+  if (!body.title || body.title.trim() === "") {
+    return res.status(400).json({ error: "title is required" });
   }
 
   const updated = { ...existing, ...body };
 
-  lists = lists.map((t) => (t.id === id ? updated : t));
+  setLists(lists.map((l) => (l.id === id ? updated : l)));
 
   res.json(updated);
 };
 
-export const deleteTodo = (req, res) => {
+export const deleteList = (req, res) => {
   const id = Number(req.params.id);
 
-  const exists = lists.some((t) => t.id === id);
+  const index = lists.findIndex((l) => l.id === id);
 
-  if (!exists) {
+  if (index === -1) {
     return res.status(404).json({ error: "Not found" });
   }
 
-  lists = lists.filter((t) => t.id !== id);
-  todos = todos.filter((t) => t.listId !== id);
+  deleteTodosInList(id);
+  setLists(lists.filter((t) => t.id !== id));
 
   res.status(204).send();
 };

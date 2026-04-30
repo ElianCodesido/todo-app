@@ -4,6 +4,7 @@ type Props = {
   headerTitle: string;
   children: ReactNode;
   idList: number;
+  onEdit: (newText: string) => void;
   handleClose: () => void;
 };
 type Position = {
@@ -15,6 +16,7 @@ export function DraggableWindow({
   headerTitle,
   children,
   idList,
+  onEdit,
   handleClose,
 }: Props) {
   const [position, setPosition] = useState<Position>(() => {
@@ -32,7 +34,8 @@ export function DraggableWindow({
   const dragging = useRef(false);
   const offset = useRef({ x: 0, y: 0 });
   const windowRef = useRef<HTMLDivElement>(null);
-
+  const [editing, setEditing] = useState(false);
+  const [newText, setNewText] = useState(headerTitle);
   const handleMouseDown = (e: React.MouseEvent) => {
     e.preventDefault();
     dragging.current = true;
@@ -76,7 +79,15 @@ export function DraggableWindow({
       window.removeEventListener("mouseup", handleMouseUp);
     };
   }, []);
-
+  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    onEdit(newText);
+    setEditing(false);
+  };
+  const handleCancel = () => {
+    setNewText(headerTitle);
+    setEditing(false);
+  };
   return (
     <>
       <div
@@ -92,8 +103,31 @@ export function DraggableWindow({
             className="window-header"
             onMouseDown={(e) => handleMouseDown(e)}
           >
-            <div>
-              <p className="window-title">{headerTitle}</p>
+            <div className="edit">
+              {editing ? (
+                <form className="edit" onSubmit={handleSubmit}>
+                  <input
+                    className="editTextArea"
+                    value={newText}
+                    onChange={(e) => setNewText(e.target.value)}
+                    autoFocus
+                    onKeyDown={(e) => {
+                      if (e.key === "Escape") handleCancel();
+                    }}
+                  />
+                  <button type="submit">Save</button>
+                </form>
+              ) : (
+                <p className="window-title">{headerTitle}</p>
+              )}
+              {!editing && (
+                <button
+                  className="edit-btn"
+                  aria-label="Delete"
+                  type="submit"
+                  onClick={() => setEditing(true)}
+                ></button>
+              )}
             </div>
             <div className="window-actions">
               <button className="btn close" onClick={handleClose}>
