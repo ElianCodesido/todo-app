@@ -111,5 +111,5 @@ The backend currently exposes REST endpoints for **task lists** and **tasks**.
 ## Author
 
 Elian Codesido
-Github: https://github.com/ElianCodesido
-Linkedin: https://www.linkedin.com/in/elian-alexis-codesido/
+* Github: https://github.com/ElianCodesido
+* Linkedin: https://www.linkedin.com/in/elian-alexis-codesido/
