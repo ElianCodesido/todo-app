@@ -47,7 +47,7 @@ export const useTodo = (listId: number): UseTodoReturn => {
     };
 
     fetchTodos();
-  }, []);
+  }, [listId]);
 
   const addTodo = async (title: string) => {
     const tempId = Date.now();
@@ -69,7 +69,9 @@ export const useTodo = (listId: number): UseTodoReturn => {
       // replace temp id with real id
       setTasks((prev) =>
         prev.map((task) =>
-          task.id === tempId ? { ...task, id: data.id } : task,
+          task.id === tempId
+            ? { ...task, id: data.id, listId: data.listId }
+            : task,
         ),
       );
     } catch (err) {
