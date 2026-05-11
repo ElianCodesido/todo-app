@@ -32,7 +32,7 @@ export const getTodosByList = async (listId: number): Promise<Task[]> => {
     }
 
     return await res.json();
-  } catch {
+  } catch (error) {
     throw new Error("Error fetching todos for this list");
   }
 };

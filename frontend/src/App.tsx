@@ -18,9 +18,7 @@ function App() {
             value={text}
             placeholder="Task list name"
             onChange={(e) => {
-              if (e.target.value.length <= 25) {
-                setText(e.target.value);
-              }
+              e.target.value.length <= 25 ? setText(e.target.value) : null;
             }}
             onKeyDown={(e) => {
               if (e.key === "Enter") addList(text);

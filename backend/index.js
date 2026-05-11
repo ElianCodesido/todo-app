@@ -2,13 +2,16 @@ import express from "express";
 import cors from "cors";
 import todoRoutes from "./routes/todoRoutes.js";
 import listRoutes from "./routes/listRoutes.js";
-
 const app = express();
+const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
 
+//connect routes
 app.use("/todos", todoRoutes);
 app.use("/lists", listRoutes);
 
-export default app;
+app.listen(PORT, () => {
+  console.log("Server running on port 3000");
+});

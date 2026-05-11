@@ -18,7 +18,7 @@ export interface UseListReturn {
 }
 
 export const useList = (): UseListReturn => {
-  const [lists, setLists] = useState<List[]>([]);
+  const [lists, setlists] = useState<List[]>([]);
   const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState<Omit<LoadingState, "toggle">>({
     add: false,
@@ -27,10 +27,10 @@ export const useList = (): UseListReturn => {
   });
 
   useEffect(() => {
-    const fetchLists = async () => {
+    const fetchTodos = async () => {
       try {
         const data = await getLists();
-        setLists(data);
+        setlists(data);
       } catch (err) {
         if (err instanceof Error) {
           setError(Error(err.message));
@@ -38,7 +38,7 @@ export const useList = (): UseListReturn => {
       }
     };
 
-    fetchLists();
+    fetchTodos();
   }, []);
 
   const addList = async (title: string) => {
@@ -50,14 +50,14 @@ export const useList = (): UseListReturn => {
     };
 
     // optimistic UI
-    setLists((prev) => [...prev, newList]);
+    setlists((prev) => [...prev, newList]);
 
     try {
       setLoading((prev) => ({ ...prev, add: true }));
       const data = await createList(title);
 
       // replace temp id with real id
-      setLists((prev) =>
+      setlists((prev) =>
         prev.map((list) =>
           list.id === tempId ? { ...list, id: data.id } : list,
         ),
@@ -67,7 +67,7 @@ export const useList = (): UseListReturn => {
         setError(Error(err.message));
       }
       // rollback
-      setLists((prev) => prev.filter((list) => list.id !== tempId));
+      setlists((prev) => prev.filter((list) => list.id !== tempId));
     } finally {
       setLoading((prev) => ({ ...prev, add: false }));
     }
@@ -79,7 +79,7 @@ export const useList = (): UseListReturn => {
     try {
       await updateList(id, { title });
 
-      setLists((prev) => prev.map((t) => (t.id === id ? { ...t, title } : t)));
+      setlists((prev) => prev.map((t) => (t.id === id ? { ...t, title } : t)));
     } catch (err) {
       setError(err as Error);
     } finally {
@@ -88,8 +88,8 @@ export const useList = (): UseListReturn => {
   };
 
   const deleteList = async (id: number) => {
-    const prevLists = [...lists];
-    setLists((prev) => prev.filter((l) => l.id !== id));
+    const prevlists = [...lists];
+    setlists((prev) => prev.filter((l) => l.id !== id));
     try {
       setLoading((prev) => ({ ...prev, delete: true }));
       await removeList(id);
@@ -97,7 +97,7 @@ export const useList = (): UseListReturn => {
       if (err instanceof Error) {
         setError(Error(err.message));
       }
-      setLists(prevLists);
+      setlists(prevlists);
     } finally {
       setLoading((prev) => ({ ...prev, delete: false }));
     }
