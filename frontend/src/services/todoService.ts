@@ -1,7 +1,7 @@
 import type { Task } from "../types/Task";
 
 const API_URL = import.meta.env.VITE_API_URL + "/todos";
-
+console.log(import.meta.env.VITE_API_URL);
 const throwError = async (res: Response) => {
   try {
     const errorData = await res.json();
