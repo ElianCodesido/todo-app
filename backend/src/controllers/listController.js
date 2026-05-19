@@ -5,7 +5,6 @@ import {
   updateListService,
   deleteListService,
 } from "../services/listService.js";
-import * as listRepo from "../repositories/listRepository.js";
 
 export const getLists = async (req, res) => {
   const lists = await getListsService();

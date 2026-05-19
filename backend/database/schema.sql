@@ -1,6 +1,20 @@
+CREATE TABLE users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+
 CREATE TABLE lists (
   id INT AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR(255) NOT NULL
+  user_id INT,
+  CONSTRAINT fk_todos_list
+  FOREIGN KEY (list_id)
+  REFERENCES lists(id)
+  ON DELETE CASCADE
 );
 
 CREATE TABLE todos (
@@ -8,5 +22,6 @@ CREATE TABLE todos (
   title VARCHAR(255) NOT NULL,
   completed BOOLEAN DEFAULT FALSE,
   list_id INT,
-  FOREIGN KEY (list_id) REFERENCES lists(id)
+  FOREIGN KEY (list_id) REFERENCES lists(id),
+  ON DELETE CASCADE
 );

@@ -32,7 +32,6 @@ export const updateList = async (id, newtitle) => {
 };
 
 export const deleteList = async (id) => {
-  await db.query("DELETE FROM todos WHERE list_id = ?", [id]);
   const [result] = await db.query("DELETE FROM lists WHERE id = ?", [id]);
 
   return result.affectedRows > 0;

@@ -2,17 +2,22 @@ import "./App.css";
 import { Header, ListContainer, Toast } from "./components";
 import { useState } from "react";
 import { useList } from "./hooks/useList";
+import { useAuth } from "./hooks/useAuth";
+import { Auth } from "./components/Auth/Auth";
 function App() {
   //states
   const [text, setText] = useState("");
   //handlers
   const { lists, error, loading, addList, editList, deleteList } = useList();
+  const { user, register, login } = useAuth();
 
   return (
     <>
       <div className="app">
         {error && <Toast message="Todo List Error" />}
         <Header />
+        {!user && <Auth register={register} login={login} />}
+
         <div className="taskAdder">
           <input
             value={text}
