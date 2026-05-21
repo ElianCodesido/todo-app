@@ -17,7 +17,7 @@ export interface UseListReturn {
   deleteList: (id: number) => Promise<void>;
 }
 
-export const useList = (): UseListReturn => {
+export const useList = (userId: number): UseListReturn => {
   const [lists, setLists] = useState<List[]>([]);
   const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState<Omit<LoadingState, "toggle">>({
@@ -27,9 +27,11 @@ export const useList = (): UseListReturn => {
   });
 
   useEffect(() => {
+    if (!userId) return;
+
     const fetchLists = async () => {
       try {
-        const data = await getLists();
+        const data = await getLists(userId);
         setLists(data);
       } catch (err) {
         if (err instanceof Error) {
@@ -39,7 +41,7 @@ export const useList = (): UseListReturn => {
     };
 
     fetchLists();
-  }, []);
+  }, [userId]);
 
   const addList = async (title: string) => {
     const tempId = Date.now();
@@ -47,6 +49,7 @@ export const useList = (): UseListReturn => {
     const newList: List = {
       id: tempId,
       title,
+      userId,
     };
 
     // optimistic UI
@@ -54,7 +57,7 @@ export const useList = (): UseListReturn => {
 
     try {
       setLoading((prev) => ({ ...prev, add: true }));
-      const data = await createList(title);
+      const data = await createList(title, userId);
 
       // replace temp id with real id
       setLists((prev) =>
@@ -77,7 +80,7 @@ export const useList = (): UseListReturn => {
     setLoading((prev) => ({ ...prev, edit: true }));
 
     try {
-      await updateList(id, { title });
+      await updateList(id, { title, userId });
 
       setLists((prev) => prev.map((t) => (t.id === id ? { ...t, title } : t)));
     } catch (err) {

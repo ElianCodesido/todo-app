@@ -11,9 +11,9 @@ const throwError = async (res: Response) => {
   }
 };
 
-export const getLists = async (): Promise<List[]> => {
+export const getLists = async (userId: number): Promise<List[]> => {
   try {
-    const res = await fetch(API_URL);
+    const res = await fetch(`${API_URL}/${userId}`);
     if (!res.ok) await throwError(res);
     return res.json();
   } catch {
@@ -21,12 +21,15 @@ export const getLists = async (): Promise<List[]> => {
   }
 };
 
-export const createList = async (title: string): Promise<List> => {
+export const createList = async (
+  title: string,
+  userId: number,
+): Promise<List> => {
   try {
     const res = await fetch(API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title }),
+      body: JSON.stringify({ title, userId }),
     });
 
     if (!res.ok) await throwError(res);

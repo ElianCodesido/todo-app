@@ -1,7 +1,7 @@
 import { db } from "../config/db.js";
 
-export const getAllLists = async () => {
-  const [rows] = await db.query("SELECT * FROM lists");
+export const getListsByUser = async (id) => {
+  const [rows] = await db.query("SELECT * FROM lists WHERE user_id = ?", [id]);
   return rows;
 };
 
@@ -10,11 +10,12 @@ export const getListById = async (id) => {
   return rows[0];
 };
 //prettier-ignore
-export const createList = async (title) => {
-  const [result] = await db.query("INSERT INTO lists (title) VALUES (?)", [title]);
+export const createList = async (title, userId) => {
+  const [result] = await db.query("INSERT INTO lists (title, user_id) VALUES (?, ?)", [title, userId]);
   return {
     id: result.insertId,
     title,
+    userId,
   };
 };
 

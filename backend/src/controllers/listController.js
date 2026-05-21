@@ -7,7 +7,7 @@ import {
 } from "../services/listService.js";
 
 export const getLists = async (req, res) => {
-  const lists = await getListsService();
+  const lists = await getListsService(Number(req.params.userId));
   res.json(lists);
 };
 

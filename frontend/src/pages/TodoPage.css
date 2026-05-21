@@ -1,0 +1,22 @@
+.app {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.tasklists-container {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding: 20px;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  position: relative;
+}
+.taskAdder {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  margin: 3px;
+}

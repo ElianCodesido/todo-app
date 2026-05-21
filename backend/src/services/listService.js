@@ -1,13 +1,13 @@
 import {
-  getAllLists,
+  getListsByUser,
   getListById,
   createList,
   updateList,
   deleteList,
 } from "../repositories/listRepository.js";
 
-export const getListsService = async () => {
-  return await getAllLists();
+export const getListsService = async (id) => {
+  return await getListsByUser(id);
 };
 
 export const getListByIdService = async (id) => {
@@ -25,7 +25,7 @@ export const createListService = async (data) => {
     throw new Error("title is required");
   }
 
-  return await createList(data.title);
+  return await createList(data.title, data.userId);
 };
 
 export const updateListService = async (id, data) => {
