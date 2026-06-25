@@ -13,7 +13,7 @@
 .auth-popup {
   position: relative;
   width: 100%;
-  max-width: 420px;
+  max-width: 620px;
   background: #ffffff;
   border-radius: 14px; /* rounded corners */
   padding: 28px 24px;
@@ -57,6 +57,7 @@
 .auth-choice h2 {
   margin: 0 0 18px;
   font-size: 1.4rem;
+  user-select: none;
 }
 
 .mode-btn,
@@ -134,7 +135,41 @@
   .submit-btn {
     background: #a625eb;
   }
+  .submit-btn:disabled {
+    background: #444242;
+  }
   .close-btn {
     color: #cbd5e1;
   }
+}
+.auth-header * {
+  margin: 0;
+}
+.auth-header {
+  display: flex;
+  justify-content: space-between;
+}
+.auth-header h2 {
+  margin: 0;
+  user-select: none;
+}
+.auth-header button {
+  margin: 0;
+  width: 10%;
+  padding: 6px 6px;
+  border-radius: 10px;
+  border: 0;
+  background: #811dc3;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 150ms ease,
+    transform 80ms ease;
+}
+.auth-header button:hover {
+  background: #c21ed8;
+  transform: translateY(-1px);
+}
+.auth {
 }

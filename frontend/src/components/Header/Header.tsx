@@ -1,7 +1,10 @@
 import { useState } from "react";
 import "./Header.css";
 import { Modal } from "..";
-export const Header = () => {
+interface Props {
+  logout: () => void;
+}
+export const Header = ({ logout }: Props) => {
   const [showContact, setShowContact] = useState(false);
   return (
     <div className="header">
@@ -13,6 +16,7 @@ export const Header = () => {
         <span className="info-span" onClick={() => setShowContact(true)}>
           Contact
         </span>
+        <button onClick={() => logout()}>Log Out</button>
       </div>
 
       {showContact && (

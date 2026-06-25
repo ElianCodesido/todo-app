@@ -1,26 +1,27 @@
-import {
-  registerService,
-  loginService,
-  logoutService,
-} from "../services/authService.js";
+import { registerService, loginService } from "../services/authService.js";
+
+export const me = async (req, res) => {
+  res.json(req.user);
+};
 
 export const register = async (req, res) => {
   try {
-    const user = await registerService(req.body);
+    const user = await registerService(req.body.email, req.body.password);
     res.json(user);
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(err.status || 500).json({
+      error: err.message,
+    });
   }
 };
+
 export const login = async (req, res) => {
   try {
-    const user = await loginService(req.body);
-    res.json(user);
+    const result = await loginService(req.body.email, req.body.password);
+    res.json(result);
   } catch (err) {
-    res.status(401).json({ error: err.message });
+    res.status(err.status || 500).json({
+      error: err.message,
+    });
   }
-};
-export const logout = async (req, res) => {
-  await logoutService(req.body);
-  res.status(200);
 };

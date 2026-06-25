@@ -1,13 +1,14 @@
-import AuthScreen from "./pages/AuthScreen";
 import TodoPage from "./pages/TodoPage";
 import { useAuth } from "./hooks/useAuth";
-function App() {
-  const { user, register, login } = useAuth();
+import { Auth } from "./components/Auth/Auth";
+const App = () => {
+  const { user, loading, error, register, login, logout } = useAuth();
 
   if (!user) {
-    return <AuthScreen register={register} login={login} />;
+    return (
+      <Auth register={register} login={login} loading={loading} error={error} />
+    );
   }
-
-  return <TodoPage user={user} />;
-}
+  return <TodoPage logout={logout} />;
+};
 export default App;

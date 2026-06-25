@@ -50,11 +50,13 @@ export const useTodo = (listId: number): UseTodoReturn => {
   }, [listId]);
 
   const addTodo = async (title: string) => {
+    setError(null);
     const tempId = Date.now();
 
     const newTask: Task = {
       id: tempId,
       title,
+      createdAt: new Date().toISOString(),
       completed: false,
       listId,
     };
@@ -65,12 +67,16 @@ export const useTodo = (listId: number): UseTodoReturn => {
     try {
       setLoading((prev) => ({ ...prev, add: true }));
       const data = await createTodo(newTask);
-
       // replace temp id with real id
       setTasks((prev) =>
         prev.map((task) =>
           task.id === tempId
-            ? { ...task, id: data.id, listId: data.listId }
+            ? {
+                ...task,
+                id: data.id,
+                listId: data.listId,
+                createdAt: data.createdAt,
+              }
             : task,
         ),
       );
@@ -85,6 +91,7 @@ export const useTodo = (listId: number): UseTodoReturn => {
     }
   };
   const editTodo = async (id: number, newTitle: string) => {
+    setError(null);
     const task = tasks.find((t) => t.id === id);
     if (!task) return;
 
@@ -121,6 +128,7 @@ export const useTodo = (listId: number): UseTodoReturn => {
     }
   };
   const deleteTodo = async (id: number) => {
+    setError(null);
     const prevTasks = [...tasks];
     setTasks((prev) => prev.filter((t) => t.id !== id));
     try {
@@ -136,6 +144,7 @@ export const useTodo = (listId: number): UseTodoReturn => {
     }
   };
   const toggleTodo = async (id: number) => {
+    setError(null);
     const task = tasks.find((t) => t.id === id);
     if (!task) return;
 

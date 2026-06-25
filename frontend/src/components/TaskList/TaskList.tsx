@@ -21,7 +21,7 @@ export const TaskList = ({
               <TaskItem
                 key={todo.id}
                 text={todo.title}
-                id={todo.id}
+                createdAt={todo.createdAt}
                 completed={todo.completed}
                 loading={loading}
                 onEdit={(newtitle) => editTodo(todo.id, newtitle)}
@@ -38,7 +38,7 @@ export const TaskList = ({
               <TaskItem
                 key={todo.id}
                 text={todo.title}
-                id={todo.id}
+                createdAt={todo.createdAt}
                 completed={todo.completed}
                 loading={loading}
                 onEdit={(newtitle) => editTodo(todo.id, newtitle)}

@@ -1,46 +1,51 @@
 import {
-  getTodosService,
-  getTodoByIdService,
+  getTodosByListService,
   createTodoService,
   updateTodoService,
   deleteTodoService,
 } from "../services/todoService.js";
 
-export const getTodos = async (req, res) => {
-  const listId = req.query.listId ? Number(req.query.listId) : undefined;
+export const getTodosByList = async (req, res) => {
+  const listId = req.params.listId;
 
-  const todos = await getTodosService(listId);
+  const todos = await getTodosByListService(req.user.id, listId);
 
   res.json(todos);
-};
-export const getTodoById = async (req, res) => {
-  try {
-    const todo = await getTodoByIdService(Number(req.params.id));
-    res.json(todo);
-  } catch (err) {
-    res.status(404).json({ error: err.message });
-  }
 };
 
 export const createTodo = async (req, res) => {
   try {
-    const todo = await createTodoService(req.body);
+    const todo = await createTodoService(req.user.id, req.body);
     res.status(201).json(todo);
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(err.status || 500).json({
+      error: err.message,
+    });
   }
 };
 
 export const updateTodo = async (req, res) => {
   try {
-    const updated = await updateTodoService(Number(req.params.id), req.body);
+    const updated = await updateTodoService(
+      req.user.id,
+      req.params.todoId,
+      req.body,
+    );
     res.json(updated);
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(err.status || 500).json({
+      error: err.message,
+    });
   }
 };
 
 export const deleteTodo = async (req, res) => {
-  await deleteTodoService(Number(req.params.id));
-  res.sendStatus(204);
+  try {
+    await deleteTodoService(req.user.id, req.params.todoId);
+    res.sendStatus(204);
+  } catch (err) {
+    res.status(err.status || 500).json({
+      error: err.message,
+    });
+  }
 };

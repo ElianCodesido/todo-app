@@ -1,32 +1,37 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export const Toast = ({ message }: { message: string }) => {
   const [visibleMessage, setVisibleMessage] = useState("");
   const timerRef = useRef<number | null>(null);
 
-  const startTimer = () => {
+  const clearTimer = useCallback(() => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+  }, []);
+  const startTimer = useCallback(() => {
     clearTimer();
 
     timerRef.current = window.setTimeout(() => {
       setVisibleMessage("");
     }, 3000);
-  };
-
-  const clearTimer = () => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-      timerRef.current = null;
-    }
-  };
+  }, [clearTimer]);
 
   useEffect(() => {
     if (!message) return;
 
-    setVisibleMessage(message);
-    startTimer();
+    // defer setting state to avoid synchronous setState inside effect
+    const id = window.setTimeout(() => {
+      setVisibleMessage(message);
+      startTimer();
+    }, 0);
 
-    return clearTimer;
-  }, [message]);
+    return () => {
+      clearTimeout(id);
+      clearTimer();
+    };
+  }, [message, startTimer, clearTimer]);
 
   if (!visibleMessage) return null;
 

@@ -4,7 +4,8 @@ import type { LoadingState } from "../../hooks";
 
 interface Props {
   text: string;
-  id: number;
+  //id: number;
+  createdAt: string;
   completed: boolean;
   loading: Omit<LoadingState, "add">;
   onEdit: (newText: string) => void;
@@ -14,7 +15,7 @@ interface Props {
 
 export const TaskItem = ({
   text,
-  id,
+  createdAt,
   completed,
   loading,
   onEdit,
@@ -24,7 +25,7 @@ export const TaskItem = ({
   const [editing, setEditing] = useState(false);
   const [newText, setNewText] = useState(text);
 
-  const fecha = new Date(id).toLocaleString([], {
+  const date = new Date(createdAt).toLocaleString([], {
     year: "numeric",
     month: "numeric",
     day: "numeric",
@@ -36,7 +37,7 @@ export const TaskItem = ({
 
   const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onEdit(newText);
+    if (!(text === newText)) onEdit(newText);
     setEditing(false);
   };
 
@@ -59,7 +60,11 @@ export const TaskItem = ({
           <input
             className="editTextArea"
             value={newText}
-            onChange={(e) => setNewText(e.target.value)}
+            onChange={(e) => {
+              if (e.target.value.length <= 30) {
+                setNewText(e.target.value);
+              }
+            }}
             autoFocus
             onKeyDown={(e) => {
               if (e.key === "Escape") handleCancel();
@@ -75,7 +80,7 @@ export const TaskItem = ({
         </div>
       )}
 
-      <div className={(completed ? "marked" : "") + " date"}>{fecha}</div>
+      <div className={(completed ? "marked" : "") + " date"}>{date}</div>
 
       {!editing && (
         <button onClick={() => setEditing(true)} disabled={loading.edit}>

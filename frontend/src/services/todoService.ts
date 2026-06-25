@@ -1,86 +1,62 @@
+import { authHeaders } from "../helpers/authHeaders";
 import type { Task } from "../types/Task";
 
 const API_URL = import.meta.env.VITE_API_URL + "/todos";
 
 const throwError = async (res: Response) => {
-  try {
-    const errorData = await res.json();
-    throw new Error(errorData.error || "Unknown error");
-  } catch {
-    throw new Error("Server error");
-  }
-};
-
-export const getTodos = async () => {
-  try {
-    const res = await fetch(API_URL);
-    if (!res.ok) {
-      await throwError(res);
-    }
-    return res.json();
-  } catch {
-    throw new Error("Cannot connect to server");
-  }
+  const errorData = await res.json();
+  throw new Error(errorData.error || "Unknown error");
 };
 
 export const getTodosByList = async (listId: number): Promise<Task[]> => {
-  try {
-    const res = await fetch(`${API_URL}?listId=${listId}`);
+  const res = await fetch(`${API_URL}` + `/${listId}`, {
+    headers: authHeaders(),
+  });
 
-    if (!res.ok) {
-      await throwError(res);
-    }
-
-    return await res.json();
-  } catch {
-    throw new Error("Error fetching todos for this list");
+  if (!res.ok) {
+    await throwError(res);
   }
+
+  return await res.json();
 };
 
-export const createTodo = async (todo: Omit<Task, "id">) => {
-  try {
-    const res = await fetch(API_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(todo),
-    });
+export const createTodo = async (todo: Omit<Task, "id" | "createdAt">) => {
+  const res = await fetch(API_URL, {
+    method: "POST",
+    headers: authHeaders(),
+    body: JSON.stringify(todo),
+  });
 
-    if (!res.ok) {
-      await throwError(res);
-    }
-    return res.json();
-  } catch {
-    throw new Error("Cannot connect to server");
+  if (!res.ok) {
+    await throwError(res);
   }
+
+  return res.json();
 };
 
-export const updateTodo = async (id: number, todo: Omit<Task, "id">) => {
-  try {
-    const res = await fetch(`${API_URL}/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(todo),
-    });
+export const updateTodo = async (
+  id: number,
+  todo: Omit<Task, "id" | "createdAt">,
+) => {
+  const res = await fetch(`${API_URL}/${id}`, {
+    method: "PATCH",
+    headers: authHeaders(),
+    body: JSON.stringify(todo),
+  });
 
-    if (!res.ok) {
-      await throwError(res);
-    }
-    return res.json();
-  } catch {
-    throw new Error("Cannot connect to server");
+  if (!res.ok) {
+    await throwError(res);
   }
+  return res.json();
 };
 
 export const removeTodo = async (id: number) => {
-  try {
-    const res = await fetch(`${API_URL}/${id}`, {
-      method: "DELETE",
-    });
+  const res = await fetch(`${API_URL}/${id}`, {
+    method: "DELETE",
+    headers: authHeaders(),
+  });
 
-    if (!res.ok) {
-      await throwError(res);
-    }
-  } catch {
-    throw new Error("Cannot connect to server");
+  if (!res.ok) {
+    await throwError(res);
   }
 };

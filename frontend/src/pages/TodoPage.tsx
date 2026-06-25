@@ -2,30 +2,28 @@ import "./TodoPage.css";
 import { Header, ListContainer, Toast } from "../components";
 import { useState } from "react";
 import { useList } from "../hooks/useList";
-import type { Auth } from "../types/Auth";
 interface Props {
-  user: Auth;
+  logout: () => void;
 }
-function TodoPage({ user }: Props) {
+
+function TodoPage({ logout }: Props) {
   //states
   const [text, setText] = useState("");
   //handlers
-  const { lists, error, loading, addList, editList, deleteList } = useList(
-    user.id,
-  );
+  const { lists, error, loading, addList, editList, deleteList } = useList();
 
   return (
     <>
       <div className="app">
-        {error && <Toast message="Todo List Error" />}
-        <Header />
+        {error && <Toast message={error.message} />}
+        <Header logout={logout} />
 
         <div className="taskAdder">
           <input
             value={text}
             placeholder="Task list name"
             onChange={(e) => {
-              if (e.target.value.length <= 25) {
+              if (e.target.value.length <= 20) {
                 setText(e.target.value);
               }
             }}

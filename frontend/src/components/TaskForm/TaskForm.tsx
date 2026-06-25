@@ -25,7 +25,11 @@ export const TaskForm = ({ onAdd, loading }: Props) => {
             type="text"
             placeholder="Enter the task"
             value={text}
-            onChange={(e) => setText(e.target.value)}
+            onChange={(e) => {
+              if (e.target.value.length <= 30) {
+                setText(e.target.value);
+              }
+            }}
             autoFocus
           />
           <button disabled={loading} className="button" type="submit">

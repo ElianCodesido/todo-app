@@ -81,7 +81,7 @@ export function DraggableWindow({
   }, []);
   const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onEdit(newText);
+    if (!(headerTitle === newText)) onEdit(newText);
     setEditing(false);
   };
   const handleCancel = () => {
@@ -109,7 +109,11 @@ export function DraggableWindow({
                   <input
                     className="editTextArea"
                     value={newText}
-                    onChange={(e) => setNewText(e.target.value)}
+                    onChange={(e) => {
+                      if (e.target.value.length <= 20) {
+                        setNewText(e.target.value);
+                      }
+                    }}
                     autoFocus
                     onKeyDown={(e) => {
                       if (e.key === "Escape") handleCancel();

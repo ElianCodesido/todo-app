@@ -1,63 +1,53 @@
 import { getListById } from "../repositories/listRepository.js";
 import {
-  getAllTodos,
+  getTodosByListAndUser,
   getTodoById,
   createTodo,
   updateTodo,
   deleteTodo,
 } from "../repositories/todoRepository.js";
-
-export const getTodosService = async (listId) => {
-  return await getAllTodos(listId);
+import { textValidation } from "../validations/textValidation.js";
+import { HttpError } from "../errors/HttpError.js";
+export const getTodosByListService = async (userId, listId) => {
+  return await getTodosByListAndUser(userId, listId);
 };
 
-export const getTodoByIdService = async (id) => {
-  const todos = await getTodoById(id);
+export const createTodoService = async (userId, data) => {
+  const title = textValidation(data.title, 30);
 
-  if (!todos) {
-    throw new Error("todos not found");
+  if (!data.listId || data.listId <= 0) {
+    throw new HttpError(400, "ListId is required.");
   }
 
-  return todos;
-};
-
-export const createTodoService = async (data) => {
-  if (!data.title?.trim()) {
-    throw new Error("title is required");
-  }
-
-  if (!data.listId) {
-    throw new Error("List id is required");
-  }
-
-  const list = await getListById(data.listId);
+  const list = await getListById(userId, data.listId);
 
   if (!list) {
-    throw new Error("List not found");
+    throw new HttpError(404, "List not found.");
   }
-
-  return await createTodo(data.title, data.listId);
+  const newTodo = await createTodo(userId, title, data.listId);
+  if (!newTodo) {
+    throw new HttpError(404, "Failed to create todo.");
+  }
+  return newTodo;
 };
 
-export const updateTodoService = async (id, data) => {
-  if (data.title !== undefined && !data.title.trim()) {
-    throw new Error("title is required");
-  }
+export const updateTodoService = async (userId, todoId, data) => {
+  const title = textValidation(data.title, 30);
 
-  const updated = await updateTodo(id, data.title, data.completed);
+  const updated = await updateTodo(userId, todoId, title, data.completed);
 
   if (!updated) {
-    throw new Error("Todo not found");
+    throw new HttpError(404, "Todo not found.");
   }
 
-  return await getTodoById(id);
+  return await getTodoById(todoId);
 };
 
-export const deleteTodoService = async (id) => {
-  const deleted = await deleteTodo(id);
+export const deleteTodoService = async (userId, todoId) => {
+  const deleted = await deleteTodo(userId, todoId);
 
   if (!deleted) {
-    throw new Error("Todo not found");
+    throw new HttpError(404, "Todo not found.");
   }
 
   return deleted;

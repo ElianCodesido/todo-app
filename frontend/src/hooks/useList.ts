@@ -17,7 +17,7 @@ export interface UseListReturn {
   deleteList: (id: number) => Promise<void>;
 }
 
-export const useList = (userId: number): UseListReturn => {
+export const useList = (): UseListReturn => {
   const [lists, setLists] = useState<List[]>([]);
   const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState<Omit<LoadingState, "toggle">>({
@@ -27,11 +27,9 @@ export const useList = (userId: number): UseListReturn => {
   });
 
   useEffect(() => {
-    if (!userId) return;
-
     const fetchLists = async () => {
       try {
-        const data = await getLists(userId);
+        const data = await getLists();
         setLists(data);
       } catch (err) {
         if (err instanceof Error) {
@@ -41,15 +39,15 @@ export const useList = (userId: number): UseListReturn => {
     };
 
     fetchLists();
-  }, [userId]);
+  }, []);
 
   const addList = async (title: string) => {
+    setError(null);
     const tempId = Date.now();
 
     const newList: List = {
       id: tempId,
       title,
-      userId,
     };
 
     // optimistic UI
@@ -57,7 +55,7 @@ export const useList = (userId: number): UseListReturn => {
 
     try {
       setLoading((prev) => ({ ...prev, add: true }));
-      const data = await createList(title, userId);
+      const data = await createList(title);
 
       // replace temp id with real id
       setLists((prev) =>
@@ -77,12 +75,13 @@ export const useList = (userId: number): UseListReturn => {
   };
 
   const editList = async (id: number, title: string) => {
+    setError(null);
     setLoading((prev) => ({ ...prev, edit: true }));
 
     try {
-      await updateList(id, { title, userId });
+      await updateList(id, title);
 
-      setLists((prev) => prev.map((t) => (t.id === id ? { ...t, title } : t)));
+      setLists((prev) => prev.map((l) => (l.id === id ? { ...l, title } : l)));
     } catch (err) {
       setError(err as Error);
     } finally {
@@ -91,6 +90,7 @@ export const useList = (userId: number): UseListReturn => {
   };
 
   const deleteList = async (id: number) => {
+    setError(null);
     const prevLists = [...lists];
     setLists((prev) => prev.filter((l) => l.id !== id));
     try {
