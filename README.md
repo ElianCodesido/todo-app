@@ -72,6 +72,23 @@ This structure improves maintainability, scalability, and testability.
 
 https://todo-app-elian.vercel.app/
 
+## Screenshots
+
+### Authentication
+
+![Auth Screen](./screenshots/Auth.png)
+
+### Login
+
+![Login Screen](./screenshots/Login.png)
+
+### Register
+
+![Register Screen](./screenshots/Register.png)
+
+### To-Do App
+
+![To-Do Screen](./screenshots/App.png) 
 
 ## API Overview
 

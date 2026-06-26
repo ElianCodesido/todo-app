@@ -54,7 +54,7 @@ export const Auth = ({ register, login, loading, error }: Props) => {
       <div className="auth-popup">
         {mode === "choice" && (
           <div className="auth-choice">
-            <h2>Elian's Todo App</h2>
+            <h2>Elian's To-Do App</h2>
             <button onClick={() => setMode("login")} className="mode-btn">
               Log In
             </button>
