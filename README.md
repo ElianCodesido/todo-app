@@ -68,6 +68,18 @@ The backend follows a layered architecture to separate responsibilities:
 
 This structure improves maintainability, scalability, and testability.
 
+## Technical Highlights
+
+- JWT Authentication
+- Password hashing with bcrypt
+- MySQL relational database
+- Layered backend architecture
+- RESTful API
+- Ownership-based authorization
+- Backend validation
+- Centralized error handling
+- Environment variables
+
 ## Live Demo
 
 https://todo-app-elian.vercel.app/
