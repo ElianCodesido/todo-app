@@ -8,11 +8,10 @@ The project was developed to demonstrate a modern full-stack architecture, inclu
 
 ### Authentication
 
-* User registration and login
-* Password hashing with bcrypt
 * JWT-based authentication
-* Protected API routes
-* User authorization (users can only access their own data)
+* Protected REST API endpoints
+* Ownership-based authorization
+* Secure password hashing with bcrypt
 
 ### Task Management
 
@@ -60,27 +59,33 @@ The project was developed to demonstrate a modern full-stack architecture, inclu
 
 The backend follows a layered architecture to separate responsibilities:
 
-* Routes
-* Controllers
-* Services
-* Repositories
-* Database
+Client
+   ↓
+Routes
+   ↓
+Authentication Middleware
+   ↓
+Controllers
+   ↓
+Services
+   ↓
+Repositories
+   ↓
+MySQL Database
 
 This structure improves maintainability, scalability, and testability.
 
 ## Technical Highlights
 
-- JWT Authentication
-- Password hashing with bcrypt
-- MySQL relational database
 - Layered backend architecture
-- RESTful API
 - Ownership-based authorization
-- Backend validation
-- Centralized error handling
-- Environment variables
+- Optimistic UI updates
+- Draggable interface
+- Relational database schema
 
-## Video Demo
+## Demo
+
+The live demo is currently unavailable. The video below demonstrates the application's main features.
 
 [Screencast_20260803_181316.webm](https://github.com/user-attachments/assets/cdd8dedb-1b6b-4ecd-99cf-28847560898d)
 
@@ -94,7 +99,7 @@ This structure improves maintainability, scalability, and testability.
 
 ### Lists
 
-* GET /lists (by userId)
+* GET /lists
 * POST /lists
 * PATCH /lists/:id
 * DELETE /lists/:id
@@ -141,16 +146,17 @@ Create a `.env` file inside the backend directory containing the required enviro
 
 Possible future enhancements include:
 
-* Automated testing
-* Docker support
-* API documentation
-* Role-based authorization
-* Password recovery
+- Automated testing
+- Docker support
+- API documentation (OpenAPI/Swagger)
+- Password recovery
+- Pagination for large task collections
+- Search and filtering
 
 ## Author
 
 Elian Codesido
 
-GitHub: https://github.com/ElianCodesido
+- GitHub: https://github.com/ElianCodesido
 
-LinkedIn: https://www.linkedin.com/in/elian-alexis-codesido/
+- LinkedIn: https://www.linkedin.com/in/elian-alexis-codesido/
