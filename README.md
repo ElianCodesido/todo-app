@@ -62,12 +62,18 @@ The backend follows a layered architecture to separate responsibilities:
 
 This preserves the formatting exactly:
 
-Client ↓<br>
-Routes ↓<br>
-Authentication Middleware ↓<br>
-Controllers ↓<br>
-Services ↓<br>
-Repositories ↓<br>
+Client<br> 
+↓<br>
+Routes<br>
+↓<br>
+Authentication Middleware<br>
+↓<br>
+Controllers<br>
+↓<br>
+Services<br>
+↓<br>
+Repositories<br>
+↓<br>
 MySQL Database
 
 This structure improves maintainability, scalability, and testability.
