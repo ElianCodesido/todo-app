@@ -61,21 +61,14 @@ The backend follows a layered architecture to separate responsibilities:
 
 
 This preserves the formatting exactly:
-
-```text
-Client
-  ↓
-Routes
-  ↓
-Authentication Middleware
-  ↓
-Controllers
-  ↓
-Services
-  ↓
-Repositories
-  ↓
-MySQL Database
+```mermaid
+flowchart TD
+    Client --> Routes
+    Routes --> Authentication_Middleware
+    Authentication_Middleware --> Controllers
+    Controllers --> Services
+    Services --> Repositories
+    Repositories --> MySQL_Database
 ```
 This structure improves maintainability, scalability, and testability.
 
