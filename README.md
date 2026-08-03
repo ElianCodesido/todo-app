@@ -60,17 +60,17 @@ The project was developed to demonstrate a modern full-stack architecture, inclu
 The backend follows a layered architecture to separate responsibilities:
 
 Client
-   ↓
+↓
 Routes
-   ↓
+↓
 Authentication Middleware
-   ↓
+↓
 Controllers
-   ↓
+↓
 Services
-   ↓
+↓
 Repositories
-   ↓
+↓
 MySQL Database
 
 This structure improves maintainability, scalability, and testability.
