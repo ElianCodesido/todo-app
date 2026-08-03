@@ -80,27 +80,9 @@ This structure improves maintainability, scalability, and testability.
 - Centralized error handling
 - Environment variables
 
-## Live Demo
+## Video Demo
 
-https://todo-app-elian.vercel.app/
-
-## Screenshots
-
-### Authentication
-
-![Auth Screen](./screenshots/Auth.png)
-
-### Login
-
-![Login Screen](./screenshots/Login.png)
-
-### Register
-
-![Register Screen](./screenshots/Register.png)
-
-### To-Do App
-
-![To-Do Screen](./screenshots/App.png) 
+[Screencast_20260803_181316.webm](https://github.com/user-attachments/assets/cdd8dedb-1b6b-4ecd-99cf-28847560898d)
 
 ## API Overview
 
